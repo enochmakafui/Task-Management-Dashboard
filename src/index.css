@@ -1,0 +1,19 @@
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 
+colors:
+#E3F3FD
+
+*/
+
+
+
+body{
+  background-color: #E3F3FD;
+  color: #333;
+}
