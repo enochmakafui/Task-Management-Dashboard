@@ -1,39 +1,95 @@
 import { useState } from "react";
+import Header from "./Components/Header";
+import TaskForm from "./Components/TaskForm";
+import TaskListBox from "./Components/TaskListBox";
 
-import {
-  Box,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Typography,
-  Card,
-  IconButton,
-  Button,
-  DialogContent,
-  TextField,
-  InputLabel,
-  OutlinedInput,
-  Select,
-  MenuItem,
-  FormControl,
-  CardContent,
-  CardActions,
-} from "@mui/material";
-import {
-  Add as AddIcon,
-  Close as CloseIcon,
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-} from "@mui/icons-material";
+import { Box } from "@mui/material";
 
 export default function App() {
   const [open, setOpen] = useState(false);
+  const [todoTaskArray, setTodoTaskArray] = useState([]);
+  const [inProgressTaskArray, setInProgressTaskArray] = useState([]);
+  const [dueDateTaskArray, setDueDateTaskArray] = useState([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [status, setStatus] = useState("");
+  const [date, setDate] = useState("");
 
   function handleOpen() {
     setOpen(true);
   }
 
   function handleClose() {
+    setOpen(false);
+  }
+
+  function handleDelete(id, status) {
+
+    console.log(id, status);
+    if (status === "Todo") {
+      
+      setTodoTaskArray((prevItems) => {
+        prevItems.filter((item) => item.id !== id);
+      });
+    }
+    if (status === "InProgress") {
+      setInProgressTaskArray((prevItems) => {
+        prevItems.filter((item) => item.id !== id);
+      });
+    }
+
+    if (status === "Due") {
+      setDate((prevItems) => {
+        prevItems.filter((item) => item.id !== id);
+      });
+    }
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (status === "Todo") {
+      setTodoTaskArray([
+        ...todoTaskArray,
+        {
+          id: title,
+          title,
+          description,
+          status,
+          date,
+        },
+      ]);
+      console.log(todoTaskArray);
+    }
+
+    if (status === "InProgress") {
+      setInProgressTaskArray([
+        ...inProgressTaskArray,
+        {
+          id: title,
+          title,
+          description,
+          status,
+          date,
+        },
+      ]);
+    }
+    if (status === "Due") {
+      setDueDateTaskArray([
+        ...dueDateTaskArray,
+        {
+          id: title,
+          title,
+          description,
+          status,
+          date,
+        },
+      ]);
+    }
+    setTitle("");
+    setDescription("");
+    setStatus("");
+    setDate("");
     setOpen(false);
   }
 
@@ -47,103 +103,31 @@ export default function App() {
         borderRadius: "8px",
       }}
     >
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 4 }}>
-        <Typography variant="h5">Task DashBoard</Typography>
-        <Button
-          variant="contained"
-          onClick={handleOpen}
-          startIcon={<AddIcon />}
-          sx={{ backgroundColor: "#D7DA2F", color: "#000" }}
-        >
-          Add Task
-        </Button>
-      </Box>
-      <Box>
-        <Typography variant="h6">To Do</Typography>
-        <Card>
-          <CardContent>
-            <Typography>Complete Project Proposal</Typography>
-            <Typography>Draft and finalize the Q1 project proposal</Typography>
-            <Typography>Due: 2/15/2025</Typography>
-          </CardContent>
-          <CardActions></CardActions>
-        </Card>
-      </Box>
-      <Box>
-        <Typography variant="h6">In Progress</Typography>
-      </Box>
-      <Box>
-        <Typography variant="h6">Due Date</Typography>
-      </Box>
-      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          Create a new task
-          <IconButton
-            edge="end"
-            color="inherit"
-            onClick={handleClose}
-            aria-label="close"
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          <Box sx={{ pt: 2, display: "flex", flexDirection: "column", gap: 2 }}>
-            <TextField
-              name="title"
-              label="Title"
-              fullWidth
-              required
-              size="normal"
-            />
-            <FormControl fullWidth required sx={{ marginBottom: "1rem" }}>
-              <InputLabel id="demo-multiple-name-label">Status</InputLabel>
-              <Select
-                labelId="demo-multiple-name-label"
-                id="demo-multiple-name"
-                input={<OutlinedInput label="Status" />}
-              >
-                <MenuItem value="hello">Todo</MenuItem>
-                <MenuItem value="world">In Progress</MenuItem>
-                <MenuItem value="goodbye">Done</MenuItem>
-              </Select>
-            </FormControl>
-            <TextField
-              label="Description"
-              multiline
-              rows={4}
-              fullWidth
-              sx={{
-                fontSize: "1.2rem",
-              }}
-            />
-            <InputLabel>Due Date</InputLabel>
+      <Header handleOpen={handleOpen} />
 
-            <TextField
-              type="date"
-              fullWidth
-              sx={{
-                fontSize: "1.2rem",
-              }}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            fullWidth
-            sx={{ backgroundColor: "#D7DA2F", color: "#333" }}
-          >
-            create task
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <TaskForm
+        title={title}
+        setTitle={setTitle}
+        status={status}
+        setStatus={setStatus}
+        description={description}
+        setDescription={setDescription}
+        dueDate={date}
+        setDueDate={setDate}
+        open={open}
+        handleClose={handleClose}
+        handleSubmit={handleSubmit}
+      />
+
+      <TaskListBox
+        taskHeading="To Do"
+        taskArray={todoTaskArray}
+        onDelete={handleDelete}
+      />
+
+      <TaskListBox taskHeading="In Progress" taskArray={inProgressTaskArray} />
+
+      <TaskListBox taskHeading="Due Date" taskArray={dueDateTaskArray} />
     </Box>
   );
 }
