@@ -9,7 +9,7 @@ export default function App() {
   const [open, setOpen] = useState(false);
   const [todoTaskArray, setTodoTaskArray] = useState([]);
   const [inProgressTaskArray, setInProgressTaskArray] = useState([]);
-  const [dueDateTaskArray, setDueDateTaskArray] = useState([]);
+  const [dateTaskArray, setDateTaskArray] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
@@ -24,24 +24,20 @@ export default function App() {
   }
 
   function handleDelete(id, status) {
-
     console.log(id, status);
     if (status === "Todo") {
-      
-      setTodoTaskArray((prevItems) => {
-        prevItems.filter((item) => item.id !== id);
-      });
+      setTodoTaskArray((prevItems) =>
+        prevItems.filter((item) => item.id !== id)
+      );
     }
     if (status === "InProgress") {
-      setInProgressTaskArray((prevItems) => {
-        prevItems.filter((item) => item.id !== id);
-      });
+      setInProgressTaskArray((prevItems) =>
+        prevItems.filter((item) => item.id !== id)
+      );
     }
 
     if (status === "Due") {
-      setDate((prevItems) => {
-        prevItems.filter((item) => item.id !== id);
-      });
+      setDate((prevItems) => prevItems.filter((item) => item.id !== id));
     }
   }
 
@@ -52,7 +48,7 @@ export default function App() {
       setTodoTaskArray([
         ...todoTaskArray,
         {
-          id: title,
+          id: Date.now(),
           title,
           description,
           status,
@@ -66,7 +62,7 @@ export default function App() {
       setInProgressTaskArray([
         ...inProgressTaskArray,
         {
-          id: title,
+          id: Date.now(),
           title,
           description,
           status,
@@ -75,10 +71,10 @@ export default function App() {
       ]);
     }
     if (status === "Due") {
-      setDueDateTaskArray([
-        ...dueDateTaskArray,
+      setDateTaskArray([
+        ...dateTaskArray,
         {
-          id: title,
+          id: Date.now(),
           title,
           description,
           status,
@@ -127,7 +123,7 @@ export default function App() {
 
       <TaskListBox taskHeading="In Progress" taskArray={inProgressTaskArray} />
 
-      <TaskListBox taskHeading="Due Date" taskArray={dueDateTaskArray} />
+      <TaskListBox taskHeading="Due Date" taskArray={dateTaskArray} />
     </Box>
   );
 }
