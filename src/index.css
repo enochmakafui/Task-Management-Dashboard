@@ -1,5 +1,4 @@
-
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -7,13 +6,42 @@
 
 /* 
 colors:
-#E3F3FD
 
 */
 
-
-
-body{
-  background-color: #E3F3FD;
+body {
+  background-color: #005586;
   color: #333;
+}
+/* container */
+.container {
+  max-width: 1300px;
+}
+
+/* header */
+.header {
+  margin: 2rem auto;
+}
+
+/* Boards container */
+
+.boards-container {
+  margin: 3.8rem auto;
+  padding: 3rem;
+}
+.boards-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 300px);
+  gap: 5rem;
+}
+
+/* sx={{ display: "flex", gap: "4rem" }} */
+
+@media (max-width: 94em) {
+  .boards-container {
+    margin: 1.5rem auto;
+    padding: 1rem;
+
+  }
 }
